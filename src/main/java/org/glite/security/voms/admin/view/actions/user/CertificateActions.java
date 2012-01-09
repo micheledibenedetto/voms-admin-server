@@ -81,6 +81,11 @@ public class CertificateActions extends UserActionSupport {
 
 	@Action("edit-certificate")
 	public String editCertificate() throws Exception {
+		Certificate cert = CertificateDAO.instance().findById(
+				getCertificateId());
+		
+		subject = cert.getSubjectString();
+		caSubject = cert.getCa().getSubjectString();
 		return EDIT;
 	}
 	
