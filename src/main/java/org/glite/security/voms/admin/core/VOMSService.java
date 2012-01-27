@@ -178,7 +178,7 @@ public final class VOMSService {
 		VOMSConfiguration conf;
 
 		try {
-
+					
 			conf = VOMSConfiguration.load(ctxt);
 
 		} catch (VOMSConfigurationException e) {

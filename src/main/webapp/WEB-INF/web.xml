@@ -25,7 +25,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
 	version="2.4">
 
-	<display-name>VOMS-ADMIN 2.5</display-name>
+	<display-name>VOMS web services</display-name>
     
     <!-- Struts 2 filter -->
     <filter>
@@ -114,15 +114,7 @@
 			org.apache.axis.transport.http.AxisServlet
 		</servlet-class>
 	</servlet>
-	<servlet>
-		<description>
-		</description>
-		<display-name>SiblingsServlet</display-name>
-		<servlet-name>SiblingsServlet</servlet-name>
-		<servlet-class>
-		org.glite.security.voms.admin.servlets.SiblingsServlet</servlet-class>
-	</servlet>
-  
+	
     <!-- VOMS X509 Restful AC servlet -->
     <servlet>
         <servlet-name>voms-ac-servlet</servlet-name>
@@ -141,12 +133,7 @@
 		<servlet-name>axis</servlet-name>
 		<url-pattern>/servlet/axis</url-pattern>
 	</servlet-mapping>
-	
-  <servlet-mapping>
-		<servlet-name>SiblingsServlet</servlet-name>
-		<url-pattern>/SiblingsServlet</url-pattern>
-	</servlet-mapping>
-  
+	  
     <servlet-mapping>
         <servlet-name>voms-ac-servlet</servlet-name>
         <url-pattern>/generate-ac</url-pattern>

@@ -139,11 +139,11 @@ public class SAMLAttributeSerializer {
         }
         
         // Serialize FQANs
-        vomsSAMLAttributes.add(serializeFQAN( attributes.getFqans() ));
+        // vomsSAMLAttributes.add(serializeFQAN( attributes.getFqans() ));
         
         // Serialized Generic Attributes
-        for (VOMSGenericAttribute ga: attributes.getGenericAttributes())
-        	vomsSAMLAttributes.add( serializeGenericAttribute( ga ) );
+        //for (VOMSGenericAttribute ga: attributes.getGenericAttributes())
+        //	vomsSAMLAttributes.add( serializeGenericAttribute( ga ) );
         
         return vomsSAMLAttributes;   
     }

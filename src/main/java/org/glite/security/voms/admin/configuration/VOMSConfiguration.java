@@ -120,7 +120,7 @@ public final class VOMSConfiguration {
 		if (ctxt != null) {
 			context = ctxt;
 			
-			loadVOName();
+			loadVOName(ctxt);
 			configureLogback();
 
 			if (!getVOName().equals("siblings")) {
@@ -947,12 +947,24 @@ public final class VOMSConfiguration {
 
 		InputStream versionPropStream = this.getClass().getClassLoader()
 				.getResourceAsStream("version.properties");
+		
+		
 		PropertiesConfiguration versionProperties = new PropertiesConfiguration();
 
 		try {
-			versionProperties.load(versionPropStream);
-
-			config.addConfiguration(versionProperties);
+			
+			if (versionPropStream == null){
+				
+				versionProperties.addProperty("voms-admin.server.version", "devel");
+				versionProperties.addProperty("voms-admin.interface.version", "devel");
+				config.addConfiguration(versionProperties);
+				
+			}else{
+			
+				versionProperties.load(versionPropStream);
+				config.addConfiguration(versionProperties);
+			
+			}
 
 		} catch (ConfigurationException e) {
 
@@ -990,7 +1002,16 @@ public final class VOMSConfiguration {
 	}
 	
 	
-	private void loadVOName() {
+	private void loadVOName(ServletContext context) {
+		
+		SystemConfiguration systemConfig = new SystemConfiguration();
+		
+		if (context.getInitParameter("VO_NAME") != null){
+			
+			config.setProperty(VOMSConfigurationConstants.VO_NAME, context.getInitParameter("VO_NAME"));
+			systemConfig.setProperty(VOMSConfigurationConstants.VO_NAME, context.getInitParameter("VO_NAME"));
+			return;
+		}
 		
 		JNDIConfiguration jndiConfig;
 
@@ -1010,8 +1031,6 @@ public final class VOMSConfiguration {
 
 		}
 		
-		SystemConfiguration systemConfig = new SystemConfiguration();
-
 		if (log.isDebugEnabled()) {
 
 			log.debug("JNDI Configuration contents: ");
