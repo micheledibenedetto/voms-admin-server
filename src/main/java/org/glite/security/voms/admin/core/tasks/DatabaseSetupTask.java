@@ -43,7 +43,6 @@ import org.glite.security.voms.admin.persistence.model.ACL;
 import org.glite.security.voms.admin.persistence.model.VOMSAdmin;
 import org.glite.security.voms.admin.persistence.model.VOMSGroup;
 import org.glite.security.voms.admin.persistence.model.VOMSRole;
-import org.glite.security.voms.admin.persistence.model.VOMSSeqNumber;
 import org.glite.security.voms.admin.persistence.model.task.TaskType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -159,12 +158,7 @@ public class DatabaseSetupTask extends TimerTask {
 			voGroupACL.setPermissions(voAdmin, allPermissions);
 
 			voAdminRole.importACL(voGroup);
-			
-			VOMSSeqNumber seqNum = new VOMSSeqNumber();
-			seqNum.setSeq("0");
-			
-			HibernateFactory.getSession().save(seqNum);
-			
+						
 			
 		}
 	}
@@ -182,7 +176,7 @@ public class DatabaseSetupTask extends TimerTask {
 
 			signAupTaskType.setName("SignAUPTask");
 			signAupTaskType
-					.setDescription("Tasks of this type are assigned to users that need to sign, or resign an AUP.");
+					.setDescription("Tasks of this type are assigned to users that need to sign the VO AUP.");
 
 			TaskType approveUserRequestTaskType = new TaskType();
 			approveUserRequestTaskType.setName("ApproveUserRequestTask");

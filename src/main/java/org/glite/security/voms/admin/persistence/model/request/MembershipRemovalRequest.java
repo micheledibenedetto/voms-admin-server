@@ -86,5 +86,12 @@ public class MembershipRemovalRequest extends Request {
 	
 		return builder.appendSuper(super.toString()).append("reason",reason).toString();
 	}
+
+	@Override
+	public String getContext() {
+		
+		return null;
+	}
+	
 	
 }

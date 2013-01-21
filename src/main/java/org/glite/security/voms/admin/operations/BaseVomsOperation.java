@@ -109,7 +109,7 @@ public abstract class BaseVomsOperation implements VOMSOperation {
 		__requiredPermissions = new HashMap();
 	}
 
-	AuthorizationResponse isAllowed() {
+	protected AuthorizationResponse isAllowed() {
 
 		CurrentAdmin admin = CurrentAdmin.instance();
 
@@ -128,12 +128,8 @@ public abstract class BaseVomsOperation implements VOMSOperation {
 			VOMSContext ctxt = (VOMSContext) contexts.next();
 			VOMSPermission requiredPerms = (VOMSPermission) __requiredPermissions
 					.get(ctxt);
-
-			ACL acl = ctxt.getACL();
-
-			if (acl == null)
-				throw new VOMSInconsistentDatabaseException(
-						"ACL not found for context \"" + ctxt + "\".");
+			
+			
 
 			if (!admin.hasPermissions(ctxt, requiredPerms))
 				return AuthorizationResponse.deny(ctxt, requiredPerms);

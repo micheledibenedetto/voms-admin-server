@@ -92,9 +92,6 @@ public class Institution {
 		if (!(other instanceof Institution))
 			return false;
 
-		if (other == null)
-			return false;
-
 		Institution that = (Institution) other;
 
 		EqualsBuilder builder = new EqualsBuilder();

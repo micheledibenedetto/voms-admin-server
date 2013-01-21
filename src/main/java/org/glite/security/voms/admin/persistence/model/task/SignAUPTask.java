@@ -46,7 +46,6 @@ public class SignAUPTask extends Task implements Serializable {
 
 	public SignAUPTask() {
 
-		// TODO Auto-generated constructor stub
 	}
 
 	public SignAUPTask(TaskType tt, AUP a, Date expiryDate) {

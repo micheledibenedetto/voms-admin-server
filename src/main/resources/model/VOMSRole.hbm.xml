@@ -50,11 +50,5 @@
 			<key column="role_id" on-delete="cascade"/>			
 			<one-to-many class="org.glite.security.voms.admin.persistence.model.ACL"/>
 		</set>
-    
-        <set name="tagMappings" inverse="true">
-          <key column="rid" on-delete="cascade"/>
-          <one-to-many class="org.glite.security.voms.admin.persistence.model.TagMapping"/>
-        </set>
-
-	</class>
+    </class>
 </hibernate-mapping>

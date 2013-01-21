@@ -330,6 +330,11 @@ function aclEntryStuff(){
 		checkPermissions('SUSPEND');
 	});
 	
+	$('#managerHandle').click(function(){
+		checkPermissions('GROUP_MANAGER');
+	});
+	
+	
 	$('#propagateHandle').click(function(){
 		$('#propagateCheckbox').click();
 	});

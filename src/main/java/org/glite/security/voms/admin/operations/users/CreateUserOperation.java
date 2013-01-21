@@ -99,7 +99,7 @@ public class CreateUserOperation extends BaseVomsOperation {
 	protected void setupPermissions() {
 
 		addRequiredPermission(VOMSContext.getVoContext(), VOMSPermission
-				.getContainerRWPermissions().setMembershipRWPermission());
+				.getContainerReadPermission().setMembershipRWPermission());
 
 	}
 

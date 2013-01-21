@@ -25,7 +25,6 @@ public class GroupMembershipRejectedEvent extends GroupMembershipRequestEvent {
 
 	public GroupMembershipRejectedEvent(GroupMembershipRequest req) {
 		super(req);
-		// TODO Auto-generated constructor stub
 	}
 
 }

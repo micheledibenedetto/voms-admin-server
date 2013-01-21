@@ -120,6 +120,7 @@ def setup_cl_options():
     admin_opt_group.add_option("--admin-shutdown-password", dest="admin_shutdown_password", help="the admin service shutdown password PWD", metavar="PWD")
     admin_opt_group.add_option("--admin-cert", dest="admin_cert", help="Grants CERT full administrator privileges in the VO", metavar="CERT")
     admin_opt_group.add_option("--read-only", dest="read_only", action="store_true", help="Sets the VOMS admin service as read-only", default=False)
+    admin_opt_group.add_option("--group-manager-role", dest="group_manager_role", help="Defines the role that will grant its members group manager privileges.", metavar="ROLENAME")
     admin_opt_group.add_option("--disable-ro-access-for-authenticated-clients", 
                                dest="read_only_auth_clients",
                                action="store_false",

@@ -39,8 +39,9 @@
         <property name="hibernate.cache.use_structured_entries">true</property>
     	
     	<mapping resource="model/VOMSDBVersion.hbm.xml" />
-    	<mapping resource="model/VOMSSeqNumber.hbm.xml" />
+        <!-- 
         <mapping resource="model/VOMSAdmin.hbm.xml" />
+         -->
         <mapping resource="model/VOMSCA.hbm.xml" />
         
         <mapping resource="model/VOMSUserAttribute.hbm.xml" />
@@ -49,20 +50,18 @@
         <mapping resource="model/VOMSRole.hbm.xml" />
         <mapping resource="model/VOMSRoleAttribute.hbm.xml" />
         <mapping resource="model/VOMSAttributeDescription.hbm.xml" />
-        <mapping resource="model/VOMSCapability.hbm.xml" />
         <mapping resource="model/VOMSMapping.hbm.xml" />
         <mapping resource="model/ACL.hbm.xml" />
-        <mapping resource="model/VOMembershipRequest.hbm.xml" />
         
         <mapping resource="model/AUP.hbm.xml"/>
         <mapping resource="model/AUPVersion.hbm.xml"/>
         <mapping resource="model/AUPAcceptanceRecord.hbm.xml"/>
-        <mapping resource="model/Tag.hbm.xml"/>
-        <mapping resource="model/TagMapping.hbm.xml"/>
         
         <!--  NEW MAPPINGS -->
+        <mapping class="org.glite.security.voms.admin.persistence.model.VOMSAdmin"/>
         
         <!--  VOMS USER & CERTIFICATE -->
+        
         <mapping class="org.glite.security.voms.admin.persistence.model.VOMSUser"/>
         <mapping class="org.glite.security.voms.admin.persistence.model.Certificate"/>
         

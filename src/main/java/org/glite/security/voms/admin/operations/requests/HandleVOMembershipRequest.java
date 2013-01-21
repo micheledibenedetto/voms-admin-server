@@ -22,9 +22,12 @@ package org.glite.security.voms.admin.operations.requests;
 
 import java.util.List;
 
+import org.eclipse.jetty.util.log.Log;
 import org.glite.security.voms.admin.event.EventManager;
 import org.glite.security.voms.admin.event.registration.VOMembershipRequestApprovedEvent;
 import org.glite.security.voms.admin.event.registration.VOMembershipRequestRejectedEvent;
+import org.glite.security.voms.admin.operations.AuthorizationResponse;
+import org.glite.security.voms.admin.operations.CurrentAdmin;
 import org.glite.security.voms.admin.operations.VOMSContext;
 import org.glite.security.voms.admin.operations.VOMSPermission;
 import org.glite.security.voms.admin.persistence.dao.VOMSGroupDAO;
@@ -105,6 +108,30 @@ public class HandleVOMembershipRequest extends
 		
 	}
 
+	
+	@Override
+	protected AuthorizationResponse isAllowed() {
+		
+		CurrentAdmin admin = CurrentAdmin.instance();
+		
+		if (admin.getVoUser() == null)
+			return super.isAllowed();
+		
+		String lowestRankRequestedGroup = request.getLowestRankRequestedGroup();
+		
+		if (lowestRankRequestedGroup == null)
+			return super.isAllowed();
+		
+		VOMSGroup rg = VOMSGroupDAO.instance().findByName(lowestRankRequestedGroup);
+		
+		if (rg != null){
+			if (admin.isGroupManager(rg))	
+				return AuthorizationResponse.permit();
+		}
+			
+		return super.isAllowed();
+		
+	}
 
 	@Override
 	protected void setupPermissions() {

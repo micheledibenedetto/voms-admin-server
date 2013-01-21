@@ -53,7 +53,7 @@ public class GroupMembershipNotificationDispatcher extends BaseNotificationDispa
 		super(new EventMask(EventType.GroupMembershipRequestEvent));
 	}
 											
-	public void fire(Event event) {
+	public synchronized void fire(Event event) {
 		
 		GroupMembershipRequestEvent e = (GroupMembershipRequestEvent) event;
 		

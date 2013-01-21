@@ -23,37 +23,53 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.glite.security.voms.admin.core.VOMSServiceConstants;
-import org.glite.security.voms.admin.error.NullArgumentException;
 import org.glite.security.voms.admin.error.VOMSSyntaxException;
-import org.glite.security.voms.admin.operations.VOMSContext;
 import org.glite.security.voms.admin.persistence.Auditable;
-import org.glite.security.voms.admin.persistence.error.AlreadyExistsException;
+import org.glite.security.voms.admin.persistence.model.request.Request;
 import org.glite.security.voms.admin.persistence.model.task.Task;
 import org.glite.security.voms.admin.util.PathNamingScheme;
 
+@Entity
+@Table(name="admins",
+	uniqueConstraints = { @UniqueConstraint( columnNames = { "dn", "ca" } )} )
 public class VOMSAdmin implements Serializable, Auditable, Cloneable {
-
-	private static Logger log = LoggerFactory.getLogger(VOMSAdmin.class);
 
 	/**
      * 
      */
 	private static final long serialVersionUID = -5459874418491929253L;
 
+	@Id
+	@Column(name = "adminid")
+	@GeneratedValue(strategy = GenerationType.AUTO, generator="VOMS_ADMIN_SEQ")
+	@SequenceGenerator(name="VOMS_ADMIN_SEQ", sequenceName="VOMS_ADMIN_SEQ")
 	Long id;
 
+	@Column(nullable=false, unique=true)
 	String dn;
 
+	@ManyToOne(optional=false)
+	@JoinColumn(name="ca")
 	VOMSCA ca;
 
+	@Column(name="email_address")
 	String emailAddress;
-
-	Set<TagMapping> tagMappings = new HashSet<TagMapping>();
-
+	
+	@OneToMany(mappedBy="admin")
 	Set<Task> tasks = new HashSet<Task>();
 
 	public VOMSAdmin() {
@@ -111,38 +127,6 @@ public class VOMSAdmin implements Serializable, Auditable, Cloneable {
 		this.id = id;
 	}
 
-	
-	
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see java.lang.Object#equals(java.lang.Object)
-//	 */
-//	public boolean equals(Object other) {
-//
-//		if (this == other)
-//			return true;
-//
-//		if (!(other instanceof VOMSAdmin))
-//			return false;
-//
-//		if (other == null)
-//			return false;
-//
-//		final VOMSAdmin that = (VOMSAdmin) other;
-//
-//		return (getDn().equals(that.getDn()));
-//	}
-//
-//	/*
-//	 * (non-Javadoc)
-//	 * 
-//	 * @see java.lang.Object#hashCode()
-//	 */
-//	public int hashCode() {
-//
-//		return getDn().hashCode();
-//	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -253,99 +237,6 @@ public class VOMSAdmin implements Serializable, Auditable, Cloneable {
 			return false;
 		}
 		return result;
-	}
-
-	/**
-	 * @return the mappings
-	 */
-	public Set<TagMapping> getTagMappings() {
-
-		return tagMappings;
-	}
-
-	/**
-	 * @param mappings
-	 *            the mappings to set
-	 */
-	public void setTagMappings(Set<TagMapping> mappings) {
-
-		this.tagMappings = mappings;
-	}
-
-	public Set<Tag> getTagsInContext(VOMSContext c) {
-
-		if (c.isGroupContext())
-			return getTagsInGroup(c.getGroup());
-		else
-			return getTagsInRole(c.getGroup(), c.getRole());
-
-	}
-
-	public Set<Tag> getTagsInGroup(VOMSGroup g) {
-
-		Set<Tag> result = new HashSet<Tag>();
-
-		for (TagMapping m : tagMappings) {
-
-			if (m.getAdmin().equals(this) && m.getGroup().equals(g))
-				result.add(m.getTag());
-		}
-
-		return result;
-	}
-
-	public Set<Tag> getTagsInRole(VOMSGroup g, VOMSRole r) {
-
-		Set<Tag> result = new HashSet<Tag>();
-
-		for (TagMapping m : tagMappings) {
-
-			if (!m.isGroupMapping())
-				continue;
-
-			if (m.getAdmin().equals(this) && m.getGroup().equals(g)
-					&& m.getRole().equals(r))
-				result.add(m.getTag());
-		}
-
-		return result;
-	}
-
-	public void assignTagInGroup(VOMSGroup group, Tag tag) {
-
-		if (group == null)
-			throw new NullArgumentException("group cannot be null!");
-
-		if (tag == null)
-			throw new NullArgumentException("tag cannot be null!");
-
-		TagMapping m = new TagMapping(tag, group, null, this);
-
-		if (!getTagMappings().add(m))
-			throw new AlreadyExistsException("Admin '" + this
-					+ "' already has tag '" + tag + "' in group '" + group
-					+ "'");
-
-	}
-
-	public void assignTagInRole(VOMSGroup group, VOMSRole role, Tag tag) {
-
-		if (group == null)
-			throw new NullArgumentException("group cannot be null!");
-
-		if (tag == null)
-			throw new NullArgumentException("tag cannot be null!");
-
-		if (role == null)
-			throw new NullArgumentException("role cannot be null!");
-
-		TagMapping m = new TagMapping(tag, group, role, this);
-
-		if (!getTagMappings().add(m))
-			throw new AlreadyExistsException("Admin '" + this
-					+ "' already has tag '" + tag + "' in group '" + group
-					+ "'");
-
 	}
 
 	/**

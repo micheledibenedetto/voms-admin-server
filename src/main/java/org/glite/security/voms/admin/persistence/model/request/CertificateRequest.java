@@ -160,4 +160,10 @@ public class CertificateRequest extends Request {
 		return builder.toString();
 	}
 
+	@Override
+	public String getContext() {
+		
+		return null;
+	}
+
 }

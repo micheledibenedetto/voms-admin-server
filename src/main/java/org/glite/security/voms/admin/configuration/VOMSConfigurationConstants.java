@@ -100,8 +100,7 @@ public interface VOMSConfigurationConstants {
 	public static final String PRESERVE_EXPIRED_MEMBERS = "voms.preserve_expired_members";
 	public static final String DISABLE_MEMBERSHIP_END_TIME = "voms.disable_membership_end_time";
 	
-	
-	
+	public static final String GROUP_MANAGER_ROLE_NAME = "voms.group_manager_role";
 	
 	/**
 	 * Attribute Authority Properties

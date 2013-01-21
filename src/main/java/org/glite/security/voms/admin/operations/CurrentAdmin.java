@@ -24,11 +24,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.glite.security.voms.admin.persistence.dao.VOMSAdminDAO;
+import org.glite.security.voms.admin.persistence.dao.VOMSRoleDAO;
 import org.glite.security.voms.admin.persistence.dao.VOMSUserDAO;
+import org.glite.security.voms.admin.persistence.error.VOMSInconsistentDatabaseException;
 import org.glite.security.voms.admin.persistence.model.ACL;
-import org.glite.security.voms.admin.persistence.model.Tag;
 import org.glite.security.voms.admin.persistence.model.VOMSAdmin;
 import org.glite.security.voms.admin.persistence.model.VOMSCA;
+import org.glite.security.voms.admin.persistence.model.VOMSGroup;
+import org.glite.security.voms.admin.persistence.model.VOMSRole;
 import org.glite.security.voms.admin.persistence.model.VOMSUser;
 import org.glite.security.voms.admin.util.DNUtil;
 import org.italiangrid.utils.voms.SecurityContextImpl;
@@ -119,6 +122,32 @@ public class CurrentAdmin {
 		}
 	}
 
+	
+	public boolean isGroupManager(VOMSGroup group){
+		
+		VOMSUser user = getVoUser();
+		if (user == null)
+			return false;
+		VOMSRole groupManagerRole = VOMSRoleDAO.instance().getGroupManagerRole();
+		
+		if (groupManagerRole == null)
+			return false;
+		
+		return user.hasRole(group, groupManagerRole);
+	}
+	
+	public boolean isGroupManager(){
+		VOMSUser user = getVoUser();
+		if (user == null)
+			return false;
+		
+		VOMSRole groupManagerRole = VOMSRoleDAO.instance().getGroupManagerRole();
+		
+		if (groupManagerRole == null)
+			return false;
+		
+		return user.hasRoleInSomeGroup(groupManagerRole);
+	}
 	public boolean isVOAdmin() {
 
 		if (hasPermissions(VOMSContext.getVoContext(), VOMSPermission
@@ -139,12 +168,18 @@ public class CurrentAdmin {
 	public boolean hasPermissions(VOMSContext c, VOMSPermission p) {
 		
 		ACL acl = c.getACL();
+		
+		if (acl == null)
+			throw new VOMSInconsistentDatabaseException(
+					"ACL not found for context \"" + c + "\".");
 
-		log.debug("Checking if admin " + getAdmin() + " has permission " + p
-				+ " in context " + c);
+		if (log.isDebugEnabled()){
+			log.debug("Checking if admin " + getAdmin() + " has permission " + p
+					+ " in context " + c);
 
-		log.debug("ACL for this context: ");
-		log.debug(acl.toString());
+			log.debug("ACL for this context: ");
+			log.debug(acl.toString());
+		}
 		
 		if (isUnauthenticated()){
 			
@@ -235,15 +270,6 @@ public class CurrentAdmin {
 							+ roleName + "'.");
 				}
 			}
-		}
-
-		for (Tag t : admin.getTagsInContext(c)) {
-
-			log.debug("Adding permissions '" + t.getPermissions()
-					+ "' from tag '" + t.getName()
-					+ "' to admin's permission set.");
-			adminPerms.addPermission(t.getPermissions());
-
 		}
 
 		log.debug("Admin permissions: " + adminPerms);

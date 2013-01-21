@@ -31,9 +31,9 @@ public class EventManager {
 
 	final List<EventListener> listeners = new ArrayList<EventListener>();
 
-	static private EventManager instance = null;
+	static private volatile EventManager instance = null;
 
-	public static final EventManager instance() {
+	public synchronized static final EventManager instance() {
 		if (instance == null)
 			instance = new EventManager();
 		return instance;

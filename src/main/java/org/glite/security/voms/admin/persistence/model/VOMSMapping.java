@@ -51,8 +51,6 @@ public class VOMSMapping implements Serializable, Auditable, Comparable {
 
 	private VOMSRole role;
 
-	private VOMSCapability capability = null;
-
 	public VOMSMapping() {
 
 	}
@@ -75,16 +73,6 @@ public class VOMSMapping implements Serializable, Auditable, Comparable {
 
 		return instance(u, g, null);
 
-	}
-
-	public VOMSCapability getCapability() {
-
-		return capability;
-	}
-
-	public void setCapability(VOMSCapability capability) {
-
-		this.capability = capability;
 	}
 
 	public VOMSGroup getGroup() {
@@ -220,9 +208,6 @@ public class VOMSMapping implements Serializable, Auditable, Comparable {
 
 		if (getRole() != null)
 			result = 29 * result + getRole().hashCode();
-
-		if (getCapability() != null)
-			result = 29 * result + getCapability().hashCode();
 
 		return result;
 	}

@@ -21,7 +21,9 @@
 package org.glite.security.voms.admin.operations.requests;
 
 import org.glite.security.voms.admin.error.IllegalRequestStateException;
+import org.glite.security.voms.admin.operations.AuthorizationResponse;
 import org.glite.security.voms.admin.operations.BaseVomsOperation;
+import org.glite.security.voms.admin.operations.CurrentAdmin;
 import org.glite.security.voms.admin.operations.users.FindUserOperation;
 import org.glite.security.voms.admin.persistence.dao.VOMSGroupDAO;
 import org.glite.security.voms.admin.persistence.dao.VOMSRoleDAO;
@@ -64,9 +66,7 @@ public abstract class BaseHandleRequestOperation<T extends Request> extends Base
 		return request;
 		
 	}
-	
-
-	
+		
 	protected final VOMSGroup findGroupByName(String groupName){
 		VOMSGroup g  = VOMSGroupDAO.instance().findByName(groupName);
 		

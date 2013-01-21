@@ -23,6 +23,10 @@
 ## voms installation prefix
 PREFIX="${package.prefix}"
 
+if [ -r "$PREFIX/etc/sysconfig/voms-admin" ]; then
+	source "$PREFIX/etc/sysconfig/voms-admin"
+fi
+
 ## jar file locations
 VOMS_WS_LIBS="$PREFIX/var/lib/voms-admin/lib"
 
@@ -52,6 +56,3 @@ VOMS_WS_START_CMD="java $VOMS_WS_JAVA_OPTS -cp $VOMS_WS_DEPS $VOMS_WS_MAIN_CLASS
 ## Base VOMS shutdown command
 VOMS_WS_SHUTDOWN_CMD="java -cp $VOMS_WS_DEPS $VOMS_WS_SHUTDOWN_CLASS"
 
-if [ -r "$PREFIX/etc/sysconfig/voms-admin" ]; then
-	source "$PREFIX/etc/sysconfig/voms-admin"
-fi

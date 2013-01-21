@@ -41,7 +41,7 @@
           column="description"/>
 			
 		<many-to-one name="parent" column="parent"
-			class="org.glite.security.voms.admin.persistence.model.VOMSGroup" not-null="false" />
+			class="org.glite.security.voms.admin.persistence.model.VOMSGroup" not-null="false" lazy="false"/>
 			
 		<property name="must" type="boolean" column="must" not-null="true"/>
       
@@ -62,11 +62,6 @@
 			<key column="group_id" on-delete="cascade"/>
 			<one-to-many class="org.glite.security.voms.admin.persistence.model.ACL"/>
 		</set>
-		
-        <set name="tagMappings" inverse="true">
-          <key column="gid" on-delete="cascade"/>
-          <one-to-many class="org.glite.security.voms.admin.persistence.model.TagMapping"/>
-        </set>
 	</class>
 
 </hibernate-mapping>

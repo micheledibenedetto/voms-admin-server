@@ -48,6 +48,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -322,7 +323,7 @@ public class VOMSUser implements Serializable, Auditable, Comparable {
 
 		if (g == null)
 			throw new NullArgumentException(
-					"Cannot org.glite.security.voms.admin.test membership in a null group!");
+					"Cannot test membership in a null group!");
 
 		Iterator i = getMappings().iterator();
 
@@ -340,18 +341,21 @@ public class VOMSUser implements Serializable, Auditable, Comparable {
 	public void addToGroup(VOMSGroup g) {
 
 		log.debug("Adding user \"" + this + "\" to group \"" + g + "\".");
+		
+		if (g.getParent() == null)
+			throw new IllegalStateException("Group "+g+" parent is null!");
+		
+		// Add this user to parent groups
+		if (!g.isRootGroup()) {
+			if (!isMember(g.getParent()))
+				addToGroup(g.getParent());
+		}
 
 		VOMSMapping m = new VOMSMapping(this, g, null);
 		if (!getMappings().add(m))
 			throw new AlreadyExistsException("User \"" + this
 					+ "\" is already a member of group \"" + g + "\".");
-
-		// Add this user to parent groups
-		if (!g.isRootGroup()) {
-			if (!isMember(g.parent))
-				addToGroup(g.parent);
-		}
-
+		
 	}
 
 	public void removeFromGroup(VOMSGroup g) {
@@ -468,6 +472,21 @@ public class VOMSUser implements Serializable, Auditable, Comparable {
 		return false;
 	}
 
+	public boolean hasRoleInSomeGroup(VOMSRole r){
+		
+		Iterator i = getMappings().iterator();
+
+		while (i.hasNext()) {
+
+			VOMSMapping m = (VOMSMapping) i.next();
+			if (m.isRoleMapping() && m.getRole().equals(r))
+				return true;
+			
+		}
+
+		return false;
+	}
+	
 	public boolean hasRole(String fqan) {
 
 		if (!PathNamingScheme.isQualifiedRole(fqan))

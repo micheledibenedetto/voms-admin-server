@@ -285,6 +285,18 @@ public class RequesterInfo implements Serializable {
 			
 	}
 	
+	public void setMultivaluedInfo(String propertyName, List<String> values){
+		
+		if (values != null && values.size() > 0){
+			addInfo(MULTIVALUE_COUNT_PREFIX+propertyName,Integer.toString(values.size()));
+			
+			for (int i=0; i < values.size(); i++)
+				addInfo(propertyName+i,values.get(i));
+			
+		}
+		
+	}
+	
 	public List<String> getMultivaluedInfo(String propertyName){
 		List<String> result = new ArrayList<String>();
 		

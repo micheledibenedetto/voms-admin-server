@@ -21,7 +21,10 @@ package org.glite.security.voms.admin.core;
 
 import it.infn.cnaf.voms.x509.X509ACGenerator;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 
@@ -49,6 +52,13 @@ import org.glite.security.voms.admin.notification.RoleMembershipNotificationDisp
 import org.glite.security.voms.admin.notification.VOMembershipNotificationDispatcher;
 import org.glite.security.voms.admin.persistence.HibernateFactory;
 import org.glite.security.voms.admin.persistence.dao.VOMSVersionDAO;
+import org.glite.security.voms.admin.persistence.model.request.NewVOMembershipRequest;
+import org.glite.security.voms.admin.request.RequestAssignmentPolicy;
+import org.glite.security.voms.admin.request.RequestMatcher;
+import org.glite.security.voms.admin.request.RequestAssignmentEngine;
+import org.glite.security.voms.admin.request.admin_lookup.AuthorizedAdminsInRequestContext;
+import org.glite.security.voms.admin.request.admin_lookup.NamedAdminLookupStrategy;
+import org.glite.security.voms.admin.request.criteria.RequestTypeExpression;
 import org.opensaml.xml.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,7 +128,7 @@ public final class VOMSService {
 		DebugEventLogListener.instance();
 		
 		DefaultNotificationDispatcher.instance();
-		
+	
 		GroupMembershipNotificationDispatcher.instance();
 		
 		RoleMembershipNotificationDispatcher.instance();
@@ -194,6 +204,8 @@ public final class VOMSService {
 		checkDatabaseVersion();
 
 		configureVelocity();
+		
+		configureRequestAssignmentEngine();
 
 		configureEventManager();
 
@@ -204,8 +216,14 @@ public final class VOMSService {
 		PluginManager.instance().configurePlugins();
 		
 		ValidationManager.instance().startMembershipChecker();
-
+		
 		log.info("VOMS-Admin started succesfully.");
+	}
+
+	private static void configureRequestAssignmentEngine() {
+		
+		// TODO: ass
+		
 	}
 
 	public static void stop() {

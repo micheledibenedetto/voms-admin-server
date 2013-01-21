@@ -31,7 +31,7 @@ public abstract class BaseUserAdministrativeOperation extends BaseVomsOperation 
 	protected VOMSUser authorizedUser;
 
 	@Override
-	final AuthorizationResponse isAllowed() {
+	protected AuthorizationResponse isAllowed() {
 
 		CurrentAdmin admin = CurrentAdmin.instance();
 

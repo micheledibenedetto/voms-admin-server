@@ -112,4 +112,13 @@ public class RoleMembershipRequest extends Request {
 		builder.appendSuper(super.toString()).append("groupName", groupName).append("roleName", roleName);
 		return builder.toString();
 	}
+
+
+
+	@Override
+	public String getContext() {
+		return getGroupName();
+	}
+	
+	
 }

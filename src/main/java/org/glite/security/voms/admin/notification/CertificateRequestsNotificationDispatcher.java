@@ -47,7 +47,7 @@ public class CertificateRequestsNotificationDispatcher extends
 		super(new EventMask(EventType.CertificateRequestEvent));
 	}
 
-	public void fire(Event e) {
+	public synchronized void fire(Event e) {
 		
 		if (e instanceof CertificateRequestSubmittedEvent){
 			

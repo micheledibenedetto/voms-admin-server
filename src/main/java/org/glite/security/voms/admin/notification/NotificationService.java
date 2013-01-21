@@ -35,7 +35,7 @@ public class NotificationService {
 
 	private static final Logger log = LoggerFactory.getLogger(NotificationService.class);
 
-	private static NotificationService singleton = null;
+	private static volatile NotificationService singleton = null;
 
 	private LinkedBlockingQueue<EmailNotification> outgoingMessages = new LinkedBlockingQueue<EmailNotification>();
 

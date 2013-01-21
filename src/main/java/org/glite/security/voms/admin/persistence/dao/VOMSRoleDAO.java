@@ -19,9 +19,12 @@
  */
 package org.glite.security.voms.admin.persistence.dao;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.glite.security.voms.admin.configuration.VOMSConfiguration;
+import org.glite.security.voms.admin.configuration.VOMSConfigurationConstants;
 import org.glite.security.voms.admin.error.NullArgumentException;
 import org.glite.security.voms.admin.persistence.HibernateFactory;
 import org.glite.security.voms.admin.persistence.error.AlreadyExistsException;
@@ -32,6 +35,7 @@ import org.glite.security.voms.admin.persistence.model.VOMSAttributeDescription;
 import org.glite.security.voms.admin.persistence.model.VOMSGroup;
 import org.glite.security.voms.admin.persistence.model.VOMSRole;
 import org.glite.security.voms.admin.persistence.model.VOMSRoleAttribute;
+import org.glite.security.voms.admin.persistence.model.VOMSUser;
 import org.hibernate.Query;
 
 public class VOMSRoleDAO {
@@ -41,6 +45,7 @@ public class VOMSRoleDAO {
 		HibernateFactory.beginTransaction();
 	}
 
+	
 	public List findAll() {
 
 		return getAll();
@@ -410,7 +415,7 @@ public class VOMSRoleDAO {
 
 	}
 
-	public List getMembers(VOMSGroup g, VOMSRole r) {
+	public List<VOMSUser> getMembers(VOMSGroup g, VOMSRole r) {
 
 		if (g == null)
 			throw new IllegalArgumentException(
@@ -425,7 +430,16 @@ public class VOMSRoleDAO {
 				"group", g).setEntity("role", r).list();
 
 	}
-
+	
+	public VOMSRole getGroupManagerRole(){
+		
+		String roleName = VOMSConfiguration.instance().getString(VOMSConfigurationConstants.GROUP_MANAGER_ROLE_NAME);
+		if (roleName == null)
+			return null;
+		
+		return findByName(roleName);
+		
+	}
 	public static VOMSRoleDAO instance() {
 
 		return new VOMSRoleDAO();

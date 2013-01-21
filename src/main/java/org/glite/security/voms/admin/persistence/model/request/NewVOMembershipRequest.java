@@ -19,10 +19,13 @@
  */
 package org.glite.security.voms.admin.persistence.model.request;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
@@ -34,6 +37,8 @@ public class NewVOMembershipRequest extends Request {
      */
 	private static final long serialVersionUID = 1L;
 
+	public static final String REQUESTED_GROUP_KEY = "requestedGroup";
+	
 	@Column(nullable = false)
 	String confirmId;
 
@@ -64,12 +69,55 @@ public class NewVOMembershipRequest extends Request {
 		return "VO membership request";
 	}
 	
+	public void addRequestedGroups(List<String> groups){
+		
+		if (groups != null && groups.size() > 0){
+		
+			getRequesterInfo().setMultivaluedInfo(REQUESTED_GROUP_KEY, groups);
+			
+		}
+	}
+	
+	
+	public List<String> getRequestedGroups(){
+		
+		return getRequesterInfo().getMultivaluedInfo(REQUESTED_GROUP_KEY);
+	}
+	
+	public String getLowestRankRequestedGroup(){
+		List<String> requestedGroups = getRequesterInfo().getMultivaluedInfo(REQUESTED_GROUP_KEY);
+		
+		String lowestRank = null;
+
+		for (String g : requestedGroups) {
+
+			if (lowestRank == null) {
+				lowestRank = g;
+			} else {
+
+				int currentHighestRank = StringUtils.countMatches(lowestRank, "/");
+				int gRank = StringUtils.countMatches(g, "/");
+
+				if (gRank > currentHighestRank)
+					lowestRank = g;
+			}
+
+		}
+		
+		return lowestRank;
+	}
 	@Override
 	public String toString() {
 		ToStringBuilder builder = new ToStringBuilder(this);
 		
 		builder.appendSuper(super.toString()).append("confirmId", confirmId);
 		return builder.toString();
+	}
+
+	@Override
+	public String getContext() {
+		
+		return getLowestRankRequestedGroup();
 	}
 
 }

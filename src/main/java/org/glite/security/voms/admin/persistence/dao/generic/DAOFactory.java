@@ -70,8 +70,6 @@ public abstract class DAOFactory {
 
 	public abstract AUPVersionDAO getAUPVersionDAO();
 
-	public abstract TagDAO getTagDAO();
-
 	public abstract TaskDAO getTaskDAO();
 
 	public abstract TaskTypeDAO getTaskTypeDAO();

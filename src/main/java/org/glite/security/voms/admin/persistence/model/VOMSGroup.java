@@ -63,8 +63,6 @@ public class VOMSGroup implements Serializable, Auditable, Comparable {
 
 	Set acls = new HashSet();
 
-	Set<TagMapping> tagMappings = new HashSet<TagMapping>();
-
 	Boolean restricted;
 
 	String description;
@@ -324,23 +322,6 @@ public class VOMSGroup implements Serializable, Auditable, Comparable {
 
 		getAcls().add(importedACL);
 
-	}
-
-	/**
-	 * @return the tagMappings
-	 */
-	public Set<TagMapping> getTagMappings() {
-
-		return tagMappings;
-	}
-
-	/**
-	 * @param tagMappings
-	 *            the tagMappings to set
-	 */
-	public void setTagMappings(Set<TagMapping> tagMappings) {
-
-		this.tagMappings = tagMappings;
 	}
 
 	public Boolean getRestricted() {

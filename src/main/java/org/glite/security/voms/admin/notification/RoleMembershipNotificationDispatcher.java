@@ -53,7 +53,7 @@ public class RoleMembershipNotificationDispatcher extends BaseNotificationDispat
 		super(new EventMask(EventType.RoleMembershipRequestEvent));
 	}
 
-	public void fire(Event event) {
+	public synchronized void fire(Event event) {
 		
 		RoleMembershipRequestEvent e = (RoleMembershipRequestEvent)event;
 		
@@ -64,8 +64,8 @@ public class RoleMembershipNotificationDispatcher extends BaseNotificationDispat
 			RoleMembershipSubmittedEvent ee = (RoleMembershipSubmittedEvent)e;
 			
 			VOMSContext context = VOMSContext.instance(ee.getRequest().getFQAN());
-			List<String> admins = NotificationUtil.getAdministratorsEmailList(context, VOMSPermission.getRequestsRWPermissions());
 			
+			List<String> admins = NotificationUtil.getAdministratorsEmailList(context, VOMSPermission.getRequestsRWPermissions());
 			
 			HandleRequest msg = new HandleRequest(req, ee.getManagementURL(), admins);
 			

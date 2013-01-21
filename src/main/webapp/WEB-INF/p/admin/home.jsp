@@ -36,9 +36,10 @@
 		</div>
 	</s:if>
 	
+     
 	<voms:hasPermissions var="canManage" context="vo" permission="REQUESTS_READ|REQUESTS_WRITE"/>
-	
-	<s:if test="#attr.canManage">
+    
+	<s:if test="#attr.currentAdmin.groupManager or #attr.canManage">
 		<div class="info-tab">
 	  		<h2><span>Pending administrative requests</span></h2>
 	  		<voms:div cssClass="content" id="pending-req-content">

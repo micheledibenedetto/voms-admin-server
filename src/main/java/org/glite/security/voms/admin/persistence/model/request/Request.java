@@ -21,6 +21,7 @@ package org.glite.security.voms.admin.persistence.model.request;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,6 +34,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -41,6 +43,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.glite.security.voms.admin.persistence.model.NamedType;
+import org.glite.security.voms.admin.persistence.model.VOMSAdmin;
 
 @Entity
 @Table(name = "req")
@@ -73,7 +76,9 @@ public abstract class Request implements Serializable, NamedType {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	STATUS status;
-
+	
+	String handledBy;
+	
 	/**
 	 * @return the id
 	 */
@@ -220,6 +225,16 @@ public abstract class Request implements Serializable, NamedType {
 		setStatus(STATUS.REJECTED);
 		setCompletionDate(new Date());
 
+	}
+
+	public abstract String getContext();
+	
+	public String getHandledBy() {
+		return handledBy;
+	}
+
+	public void setHandledBy(String handledBy) {
+		this.handledBy = handledBy;
 	}
 
 	@Override

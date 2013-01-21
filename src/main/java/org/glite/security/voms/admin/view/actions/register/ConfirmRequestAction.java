@@ -74,7 +74,6 @@ public class ConfirmRequestAction extends RegisterActionSupport {
 				groups = groups.subList(1, groups.size());
 			
 			ServletActionContext.getRequest().setAttribute("voGroups", groups);
-			
 			return REQUEST_ATTRIBUTES;
 		}
 

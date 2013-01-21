@@ -43,7 +43,7 @@ public class LoginAction extends BaseAction {
 
 		CurrentAdmin admin = CurrentAdmin.instance();
 
-		if (admin.isVOAdmin())
+		if (admin.isVOAdmin() || admin.isGroupManager())
 			return "admin-home";
 		else if (admin.isVoUser())
 			return "user-home";

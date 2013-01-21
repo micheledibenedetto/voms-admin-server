@@ -98,6 +98,11 @@ public class GroupMembershipRequest extends Request {
 		builder.appendSuper(super.toString()).append("groupName",groupName);
 		return builder.toString();
 	}
+
+	@Override
+	public String getContext() {
+		return getGroupName();
+	}
 	
 
 }

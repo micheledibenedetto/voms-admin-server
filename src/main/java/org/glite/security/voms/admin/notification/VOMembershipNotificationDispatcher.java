@@ -20,6 +20,7 @@
 
 package org.glite.security.voms.admin.notification;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.glite.security.voms.admin.event.Event;
@@ -55,7 +56,8 @@ public class VOMembershipNotificationDispatcher extends
 		
 	}
 
-	public void fire(Event e) {
+	
+	public synchronized void fire(Event e) {
 		
 		if (e instanceof VOMembershipRequestSubmittedEvent) {
 			VOMembershipRequestSubmittedEvent ee = (VOMembershipRequestSubmittedEvent) e;
