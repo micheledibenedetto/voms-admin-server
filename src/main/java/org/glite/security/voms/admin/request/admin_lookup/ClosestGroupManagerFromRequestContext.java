@@ -24,8 +24,7 @@ public class ClosestGroupManagerFromRequestContext implements AdministratorLooku
 		Set<VOMSAdmin> result = Collections.emptySet();
 		VOMSGroup leafGroup = VOMSGroupDAO.instance().findByName(group);
 		VOMSRole groupManagersRole = VOMSRoleDAO.instance().getGroupManagerRole();
-		
-		// TO BE finished		
+				
 		
 		return null;
 	}
